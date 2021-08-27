@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "200096719584-tfmo9ppjeq0gk4bjsj7gku7fq4qrbef9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.educatelyapp.educately.app",
+            "certificate_hash": "8f3aa0b2b968193f7bf038b0d82b144b425e9792"
+          }
+        },
+        {
           "client_id": "200096719584-u5r8c62aiesh8iviuphe5riefrpt3d1m.apps.googleusercontent.com",
           "client_type": 3
         }
