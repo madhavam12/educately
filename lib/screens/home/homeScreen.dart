@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'notesScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -196,7 +197,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) {
                                               return GestureDetector(
-                                                onTap: () {},
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          NotesScreen(
+                                                        subject: snapshot
+                                                            .data.docs[index]
+                                                            .data()['name'],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                                 child: SubjectsCard(
                                                   imgPath: snapshot
                                                       .data.docs[index]
