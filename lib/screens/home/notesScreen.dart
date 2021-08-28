@@ -8,9 +8,13 @@ import '../widgets/widgets.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:educately/models/notes.dart';
 import 'package:path/path.dart';
+import 'package:intl/intl.dart';
 import 'package:educately/services/firebaseStorageService.dart';
+import 'package:educately/models/notes.dart';
 
 import 'package:educately/services/firestoreDatabaseService.dart';
+import 'package:dio/dio.dart';
+import 'package:ext_storage/ext_storage.dart';
 
 class NotesScreen extends StatefulWidget {
   final String subject;
@@ -97,74 +101,92 @@ class _NotesScreenState extends State<NotesScreen> {
                           ),
                           Container(
                             margin: EdgeInsets.all(15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    margin: EdgeInsets.all(
-                                      25.0,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Add notes",
-                                          style: TextStyle(
-                                            letterSpacing: 1.5,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "QuickSand",
-                                            fontSize: 25.0,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 30,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Container(
+                                          margin: EdgeInsets.all(
+                                            25.0,
                                           ),
-                                        ),
-                                        file != null
-                                            ? Text(
-                                                "Added ${basename(file.path)}",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Add notes",
                                                 style: TextStyle(
                                                   letterSpacing: 1.5,
-                                                  color: Colors.black
-                                                      .withOpacity(0.7),
+                                                  color: Colors.black,
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: "QuickSand",
-                                                  fontSize: 8.0,
+                                                  fontSize: 25.0,
                                                 ),
-                                              )
-                                            : Container(),
-                                      ],
-                                    ),
+                                              ),
+                                              file != null
+                                                  ? Text(
+                                                      "Added ${basename(file.path)}",
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        letterSpacing: 1.5,
+                                                        color: Colors.black
+                                                            .withOpacity(0.7),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: "QuickSand",
+                                                        fontSize: 8.0,
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          FilePickerResult result =
+                                              await FilePicker.platform
+                                                  .pickFiles();
+
+                                          if (result != null) {
+                                            setState(() {
+                                              file = File(
+                                                  result.files.single.path);
+                                            });
+                                          } else {
+                                            showToast(
+                                                msg: "Operation Cancelled",
+                                                isLong: false);
+                                            // User canceled the picker
+                                          }
+                                        },
+                                        child: Icon(
+                                            LineAwesomeIcons.plus_circle,
+                                            color: Colors.blue,
+                                            size: 35),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    FilePickerResult result =
-                                        await FilePicker.platform.pickFiles();
-
-                                    if (result != null) {
-                                      setState(() {
-                                        file = File(result.files.single.path);
-                                      });
-                                    } else {
-                                      showToast(
-                                          msg: "Operation Cancelled",
-                                          isLong: false);
-                                      // User canceled the picker
-                                    }
-                                  },
-                                  child: Icon(LineAwesomeIcons.plus_circle,
-                                      color: Colors.blue, size: 35),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                           ElevatedButton(
                             child: Text('Post Notes'),
                             onPressed: () async {
+                              loadingBar(context);
                               if (controller.text == "") {
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
                                 showToast(
                                     msg: "Please enter a short description",
                                     isLong: false);
@@ -172,6 +194,8 @@ class _NotesScreenState extends State<NotesScreen> {
                                 return 0;
                               }
                               if (file == null) {
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
                                 showToast(
                                     msg: "Please add a file to continue",
                                     isLong: false);
@@ -198,6 +222,10 @@ class _NotesScreenState extends State<NotesScreen> {
                                   downloadURL: url,
                                   subjectIMG: widget.subjectIMG);
                               await _db.uploadNotes(notes: note);
+                              Navigator.of(context, rootNavigator: true).pop();
+                              Navigator.pop(context);
+                              showToast(
+                                  msg: "Posted Successfully!", isLong: false);
                             },
                           )
                         ],
@@ -245,7 +273,7 @@ class _NotesScreenState extends State<NotesScreen> {
               ),
             ),
             Expanded(
-              child: StreamBuilder<QuerySnapshot>(
+              child: StreamBuilder<QuerySnapshot<Map>>(
                   stream: FirebaseFirestore.instance
                       .collection("notes")
                       .where('standard', isEqualTo: "${widget.standard}")
@@ -256,18 +284,88 @@ class _NotesScreenState extends State<NotesScreen> {
                       .orderBy('dateAndTime', descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {
-                    return ListView.builder(itemBuilder: (context, index) {
-                      colors.shuffle();
-                      return Container(
-                        margin: EdgeInsets.all(15),
-                        child: NotesCard(
-                            "Ram",
-                            "Notes on solid state",
-                            "https://firebasestorage.googleapis.com/v0/b/educately-cbc94.appspot.com/o/spot-chemistry-2.png?alt=media&token=812a2067-1e46-448c-b0d5-b4eecee54fd0",
-                            "",
-                            colors[0]),
-                      );
-                    });
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      if (snapshot.hasData) {
+                        print('here');
+
+                        if (snapshot.data.docs.isEmpty) {
+                          return Center(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Image.asset('assets/images/notFound.png',
+                                      height: 250),
+                                  SizedBox(height: 20),
+                                  Text(
+                                    "No notes found",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "QuickSand",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                        return ListView.builder(
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (context, index) {
+                              Notes note = Notes.fromJson(
+                                  snapshot.data.docs[index].data());
+
+                              Timestamp time = snapshot.data.docs[index]
+                                  .data()['dateAndTime'];
+                              DateTime db = time.toDate();
+
+                              final DateFormat formatter1 =
+                                  new DateFormat.yMMMMd('en_US');
+
+                              String formatted = formatter1.format(db);
+
+                              colors.shuffle();
+                              return Container(
+                                margin: EdgeInsets.all(15),
+                                child: NotesCard(
+                                  note.userName,
+                                  note.desc,
+                                  note.subjectIMG,
+                                  note.downloadURL,
+                                  colors[0],
+                                  formatted,
+                                ),
+                              );
+                            }); // data
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else {
+                        return Center(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Image.asset('assets/images/notFound.png',
+                                    height: 250),
+                                SizedBox(height: 20),
+                                Text(
+                                  "No notes found",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "QuickSand",
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ); // no data
+                      }
+                    } else {
+                      return Center(
+                          child: CircularProgressIndicator()); // loading
+                    }
                   }),
             )
           ],
@@ -293,13 +391,14 @@ class NotesCard extends StatelessWidget {
   String _imageUrl;
   String _downloadURL;
   Color _bgColor;
-
+  String _date;
   NotesCard(
     this._name,
     this._description,
     this._imageUrl,
     this._downloadURL,
     this._bgColor,
+    this._date,
   );
 
   @override
@@ -314,25 +413,72 @@ class NotesCard extends StatelessWidget {
         child: ListTile(
           leading: Image.network(_imageUrl),
           trailing: GestureDetector(
-            onTap: () {},
+            onTap: () async {
+              String path = await ExtStorage.getExternalStoragePublicDirectory(
+                  ExtStorage.DIRECTORY_DOWNLOADS);
+              //String fullPath = tempDir.path + "/boo2.pdf'";
+              String fullPath = "$path/${_description}.pdf";
+
+              var dio = Dio();
+
+              await download2(dio, _downloadURL, fullPath, context);
+
+              showToast(msg: "Sucessfully downloaded the file!");
+            },
             child: Icon(LineAwesomeIcons.file_download,
                 size: 30, color: Colors.black),
           ),
           title: Text(
-            _name,
+            _description,
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
-          subtitle: Text(
-            _description,
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.7),
-            ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Posted By:" + _name,
+                style: TextStyle(
+                  color: Colors.black.withOpacity(0.7),
+                ),
+              ),
+              Text(
+                "Posted On: $_date",
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black.withOpacity(0.4),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+}
+
+Future download2(Dio dio, String url, String savePath, context) async {
+  try {
+    Response response = await dio.get(
+      url,
+
+      //Received data with List<int>
+      options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          validateStatus: (status) {
+            return status < 500;
+          }),
+    );
+    print(response.headers);
+    File file = File(savePath);
+    var raf = file.openSync(mode: FileMode.write);
+    // response.data is List<int> type
+    raf.writeFromSync(response.data);
+    await raf.close();
+  } catch (e) {
+    print(e);
   }
 }

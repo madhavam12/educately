@@ -14,7 +14,7 @@ void loadingBar(context) {
               CircularProgressIndicator(),
               SizedBox(width: 15),
               Text(
-                "Requesting",
+                "Pocessing",
                 style: TextStyle(
                     fontFamily: "QuickSand", fontWeight: FontWeight.bold),
               ),
