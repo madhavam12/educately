@@ -7,6 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'upcomingClasses.dart';
 import 'notesScreen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:educately/services/randomFactService.dart';
+
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'connectStudents.dart';
@@ -22,6 +25,7 @@ import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 // QrService _qrService = locator<QrService>();
 
 import 'teacherDetails.dart';
+import 'nearbyTutors.dart';
 
 final GlobalKey<SideMenuState> _endSideMenuKey = GlobalKey<SideMenuState>();
 
@@ -305,14 +309,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       SizedBox(height: 10),
                                       FlatButton.icon(
-                                        onPressed: () async {},
+                                        onPressed: () async {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      NearbyTutors()));
+                                        },
                                         color: Colors.blueAccent,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(30.0),
                                         ),
                                         icon: const Icon(
-                                          Icons.dashboard,
+                                          Icons.search,
                                           color: Colors.white,
                                         ),
                                         label: Text(
@@ -519,7 +529,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ),
                                               Text(
-                                                "Tap below to get a random fact!",
+                                                "Tap below to get a random number\nfacts",
                                                 maxLines: 4,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -532,7 +542,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                               SizedBox(height: 10),
                                               FlatButton.icon(
-                                                onPressed: () async {},
+                                                onPressed: () async {
+                                                  RandomFact fact =
+                                                      RandomFact();
+
+                                                  String hh =
+                                                      await fact.fetchFact();
+
+                                                  Alert(
+                                                    context: context,
+                                                    type: AlertType.info,
+                                                    title: "Random Fact",
+                                                    desc: hh,
+                                                    buttons: [
+                                                      DialogButton(
+                                                        child: Text(
+                                                          "Close",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20),
+                                                        ),
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context),
+                                                        width: 120,
+                                                      )
+                                                    ],
+                                                  ).show();
+                                                },
                                                 color: Colors.white,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
