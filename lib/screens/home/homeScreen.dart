@@ -197,12 +197,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) {
                                               return GestureDetector(
-                                                onTap: () {
+                                                onTap: () async {
+                                                  DocumentSnapshot<Map> user =
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection(
+                                                              'students')
+                                                          .doc(FirebaseAuth
+                                                              .instance
+                                                              .currentUser
+                                                              .uid)
+                                                          .get();
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           NotesScreen(
+                                                        standard: user
+                                                            .data()['standard'],
+                                                        subjectIMG: snapshot
+                                                            .data.docs[index]
+                                                            .data()['img'],
                                                         subject: snapshot
                                                             .data.docs[index]
                                                             .data()['name'],

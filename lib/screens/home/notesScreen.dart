@@ -5,12 +5,22 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../widgets/widgets.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
+import 'package:educately/models/notes.dart';
 import 'package:path/path.dart';
+import 'package:educately/services/firebaseStorageService.dart';
+
+import 'package:educately/services/firestoreDatabaseService.dart';
 
 class NotesScreen extends StatefulWidget {
   final String subject;
-  NotesScreen({Key key, @required this.subject}) : super(key: key);
+  final String subjectIMG;
+  final String standard;
+  NotesScreen(
+      {Key key,
+      @required this.subject,
+      @required this.subjectIMG,
+      @required this.standard})
+      : super(key: key);
 
   @override
   _NotesScreenState createState() => _NotesScreenState();
@@ -153,27 +163,40 @@ class _NotesScreenState extends State<NotesScreen> {
                           ElevatedButton(
                             child: Text('Post Notes'),
                             onPressed: () async {
-                              FirebaseStorage storage =
-                                  FirebaseStorage.instance;
+                              if (controller.text == "") {
+                                showToast(
+                                    msg: "Please enter a short description",
+                                    isLong: false);
 
-                              var imageFileName =
-                                  FirebaseAuth.instance.currentUser.uid +
-                                      "" +
-                                      DateTime.now()
-                                          .microsecondsSinceEpoch
-                                          .toString(); //uniqueID
+                                return 0;
+                              }
+                              if (file == null) {
+                                showToast(
+                                    msg: "Please add a file to continue",
+                                    isLong: false);
 
-                              Reference ref =
-                                  storage.ref().child(imageFileName);
+                                return 0;
+                              }
 
-                              TaskSnapshot task = await ref
-                                  .putFile(file)
-                                  .catchError((e) => e); //uploading
+                              FirebaseStorageService storage =
+                                  FirebaseStorageService();
 
-                              var downloadUrl = await task.ref
-                                  .getDownloadURL()
-                                  .catchError((e) => e);
-                              print(downloadUrl);
+                              var url =
+                                  await storage.uploadFileAndGetDownloadUrl(
+                                      file: file,
+                                      uid: FirebaseAuth
+                                          .instance.currentUser.uid);
+
+                              Firestore _db = Firestore();
+                              Notes note = Notes(
+                                  desc: controller.text,
+                                  userName: FirebaseAuth
+                                      .instance.currentUser.displayName,
+                                  subject: widget.subject,
+                                  standard: widget.standard,
+                                  downloadURL: url,
+                                  subjectIMG: widget.subjectIMG);
+                              await _db.uploadNotes(notes: note);
                             },
                           )
                         ],
