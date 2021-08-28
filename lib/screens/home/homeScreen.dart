@@ -396,7 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: Container(
                                             margin: EdgeInsets.all(10),
                                             child: Text(
-                                              "Sorry, no doctors available in your city.",
+                                              "Sorry, no data available in your city.",
                                               style: TextStyle(
                                                   color: Colors.orange,
                                                   fontSize: 15,
