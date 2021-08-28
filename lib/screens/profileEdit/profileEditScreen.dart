@@ -35,6 +35,7 @@ class ProfileCreationView extends StatefulWidget {
 class _ProfileCreationViewState extends State<ProfileCreationView> {
   final FocusNode _nameFocus = FocusNode();
   final FocusNode _phoneFocus = FocusNode();
+  final FocusNode _aboutFocus = FocusNode();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -62,6 +63,8 @@ class _ProfileCreationViewState extends State<ProfileCreationView> {
   final TextEditingController _nameController = TextEditingController();
 
   final TextEditingController _phoneController = TextEditingController();
+
+  final TextEditingController _aboutController = TextEditingController();
 
   @override
   void initState() {
@@ -199,11 +202,21 @@ class _ProfileCreationViewState extends State<ProfileCreationView> {
                     iconData: LineAwesomeIcons.user,
                     labelText: "Phone Number",
                     hintText: "Please write your number"),
+                GetTextField(
+                    controller: _aboutController,
+                    focusNode: _aboutFocus,
+                    iconData: LineAwesomeIcons.text_height,
+                    labelText: "About",
+                    hintText: "Write something about yourself."),
+                SizedBox(
+                  height: 20,
+                ),
                 Standard(),
                 GestureDetector(
                   onTap: () async {
                     if (_nameController.text == "" ||
                         _phoneController.text == "" ||
+                        _aboutController.text == "" ||
                         standard == "") {
                       showInSnackBar(
                           context: context,
@@ -251,6 +264,7 @@ class _ProfileCreationViewState extends State<ProfileCreationView> {
                         return 0;
                       }
                       UserModel user = UserModel(
+                        about: _aboutController.text,
                         email: FirebaseAuth.instance.currentUser.email,
                         number: _phoneController.text,
                         uid: FirebaseAuth.instance.currentUser.uid,

@@ -29,15 +29,16 @@ class StudentDetailsScreen extends StatelessWidget {
   var kCategoryTextColor = Color(0xff292685);
 
   String name;
-  String subject;
+  String about;
   String imageUrl;
-
+  String standard;
   String phoneNumber;
   String uid;
   StudentDetailsScreen({
     this.name,
     this.phoneNumber,
-    this.subject,
+    this.standard,
+    this.about,
     this.uid,
     this.imageUrl,
   });
@@ -78,12 +79,15 @@ class StudentDetailsScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: kBackgroundColor,
                     borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(25),
+                      top: Radius.circular(10),
                     ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         children: <Widget>[
                           Image.network(imageUrl,
@@ -109,7 +113,7 @@ class StudentDetailsScreen extends StatelessWidget {
                                   height: 10,
                                 ),
                                 Text(
-                                  subject,
+                                  about,
                                   maxLines: 3,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -177,6 +181,28 @@ class StudentDetailsScreen extends StatelessWidget {
                         margin: EdgeInsets.all(10),
                         child: Column(
                           children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'About',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: kTitleTextColor,
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                about,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 18,
+                                  color: kTitleTextColor,
+                                ),
+                              ),
+                            ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
@@ -264,7 +290,7 @@ class StudentDetailsScreen extends StatelessWidget {
                             'Classes $name\'s attending',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 25,
+                              fontSize: 20,
                               fontFamily: "QuickSand",
                               color: kTitleTextColor,
                             ),
@@ -278,6 +304,7 @@ class StudentDetailsScreen extends StatelessWidget {
                               .orderBy('dateTime', descending: true)
                               .snapshots(),
                           builder: (context, snapshot) {
+                            print(uid);
                             if (snapshot.hasError) {
                               print(snapshot.error);
                               return Text("${snapshot.error}");
