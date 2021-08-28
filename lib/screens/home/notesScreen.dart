@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -232,7 +233,7 @@ class _NotesScreenState extends State<NotesScreen> {
                   25.0,
                 ),
                 child: Text(
-                  "Notes for ${widget.subject}(Std 12th): ",
+                  "Notes for ${widget.subject}(Std ${widget.standard}): ",
                   style: TextStyle(
                     letterSpacing: 1.5,
                     color: Colors.black,
@@ -244,18 +245,30 @@ class _NotesScreenState extends State<NotesScreen> {
               ),
             ),
             Expanded(
-              child: ListView.builder(itemBuilder: (context, index) {
-                colors.shuffle();
-                return Container(
-                  margin: EdgeInsets.all(15),
-                  child: NotesCard(
-                      "Ram",
-                      "Notes on solid state",
-                      "https://firebasestorage.googleapis.com/v0/b/educately-cbc94.appspot.com/o/spot-chemistry-2.png?alt=media&token=812a2067-1e46-448c-b0d5-b4eecee54fd0",
-                      "",
-                      colors[0]),
-                );
-              }),
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection("notes")
+                      .where('standard', isEqualTo: "${widget.standard}")
+                      .where(
+                        'subject',
+                        isEqualTo: widget.subject,
+                      )
+                      .orderBy('dateAndTime', descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    return ListView.builder(itemBuilder: (context, index) {
+                      colors.shuffle();
+                      return Container(
+                        margin: EdgeInsets.all(15),
+                        child: NotesCard(
+                            "Ram",
+                            "Notes on solid state",
+                            "https://firebasestorage.googleapis.com/v0/b/educately-cbc94.appspot.com/o/spot-chemistry-2.png?alt=media&token=812a2067-1e46-448c-b0d5-b4eecee54fd0",
+                            "",
+                            colors[0]),
+                      );
+                    });
+                  }),
             )
           ],
         ),

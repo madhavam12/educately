@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:educately/services/firebaseAuthService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:connection_verify/connection_verify.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../home/homeScreen.dart';
-
+import 'package:educately/screens/profileEdit/profileEditScreen.dart';
 import 'package:flutter/services.dart';
 import '../widgets/widgets.dart';
+import 'package:educately/services/firestoreDatabaseService.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -66,10 +67,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           return 0;
                         }
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()));
+                        Firestore _db = Firestore();
+                        bool hasFilled = await _db.hasFilledData(
+                            uid: FirebaseAuth.instance.currentUser.uid);
+                        if (hasFilled) {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
+                          return 0;
+                        } else {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileCreationView()));
+                          return 0;
+                        }
                       } catch (e) {
                         if (e is PlatformException) {
                           String errorMessage =
@@ -94,6 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               sec: 8);
                           return 0;
                         }
+                        print(e);
                         showInSnackBar(
                             context: context,
                             value: "Unknown error occured.",

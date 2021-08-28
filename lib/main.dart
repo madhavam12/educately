@@ -53,10 +53,9 @@ Widget getRoute() {
     return LoginScreen();
   }
 
-  if (box.get("state") != "0" || box.get("state") != "1") {
+  if (box.get("state") == "0" || box.get("state") == "1") {
     print('here 1');
-    return ProfileCreationView();
+    return HomeScreen();
   }
-
-  return HomeScreen();
+  return ProfileCreationView();
 }

@@ -208,6 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               .currentUser
                                                               .uid)
                                                           .get();
+                                                  print(user.data());
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -241,7 +242,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         return Text('No data'); // no data
                                       }
                                     } else {
-                                      return CircularProgressIndicator(); // loading
+                                      return Center(
+                                          child:
+                                              CircularProgressIndicator()); // loading
                                     }
                                   }),
                             )

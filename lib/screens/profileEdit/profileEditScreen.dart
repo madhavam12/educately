@@ -125,7 +125,7 @@ class _ProfileCreationViewState extends State<ProfileCreationView> {
                     margin: EdgeInsets.only(
                         left: 20, right: 20, top: 10, bottom: 10),
                     child: Text(
-                      "Please enter some basic details to help users in contacting you.",
+                      "Please enter some basic details to continue.",
                       style: TextStyle(
                         letterSpacing: 1.5,
                         color: Colors.black,
