@@ -21,6 +21,8 @@ import 'package:liquid_ui/liquid_ui.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 // QrService _qrService = locator<QrService>();
 
+import 'teacherDetails.dart';
+
 final GlobalKey<SideMenuState> _endSideMenuKey = GlobalKey<SideMenuState>();
 
 class HomeScreen extends StatefulWidget {
@@ -377,7 +379,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index) {
                                               return GestureDetector(
-                                                onTap: () {},
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          TeacherDetailsScreen(
+                                                        // uid: snapshot
+                                                        //     .data.docs[index]
+                                                        //     .data()["uid"],
+
+                                                        uid: "uid",
+                                                        phoneNumber: snapshot
+                                                                .data
+                                                                .docs[index]
+                                                                .data()[
+                                                            "phoneNumber"],
+                                                        name: snapshot
+                                                            .data.docs[index]
+                                                            .data()["name"],
+                                                        subject: snapshot
+                                                            .data.docs[index]
+                                                            .data()["subject"],
+                                                        imageUrl: snapshot
+                                                            .data.docs[index]
+                                                            .data()["img"],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
                                                 child: TeacherCard(
                                                   subject: snapshot
                                                       .data.docs[index]
