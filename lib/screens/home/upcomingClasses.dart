@@ -81,9 +81,13 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                                   new DateFormat.jm('en_US');
                               bool isExpired = db.isBefore(DateTime.now());
                               String formatted = formatter1.format(db);
+                              List goingList =
+                                  snapshot.data.docs[index].data()['going'];
                               String formatted2 = formatter2.format(db);
                               colors.shuffle();
                               return ClassCard(
+                                isGoing: goingList.contains(
+                                    FirebaseAuth.instance.currentUser.uid),
                                 id: snapshot.data.docs[index].id,
                                 isExpired: isExpired,
                                 teacherName: snapshot.data.docs[index]
@@ -142,6 +146,7 @@ class ClassCard extends StatefulWidget {
   final String teacherName;
   final String id;
   final String meetURL;
+  final bool isGoing;
   final String dateTime;
   final String subject;
   final String subjectIMG;
@@ -153,6 +158,7 @@ class ClassCard extends StatefulWidget {
       @required this.teacherName,
       @required this.dateTime,
       @required this.colorData,
+      @required this.isGoing,
       @required this.isExpired,
       @required this.subjectIMG,
       @required this.desc,
@@ -341,15 +347,17 @@ class _ClassCardState extends State<ClassCard> {
                             alignment: Alignment.centerRight,
                             child: Row(
                               children: [
-                                Text('I am going!',
+                                Text('I\'m going!',
                                     style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                         fontFamily: "QuickSand")),
                                 Switch(
-                                  value: _switchValue,
-                                  activeColor: Colors.blueAccent,
+                                  value: widget.isGoing,
+                                  activeColor: colors[0] == kBlueColor
+                                      ? Colors.green
+                                      : Colors.blueAccent,
                                   onChanged: (value) async {
                                     print('s1fa');
                                     if (value) {

@@ -40,10 +40,9 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                       child: Stack(
                         children: [
                           Positioned(
-                            right: 25,
                             bottom: 40,
                             child: Image.asset(
-                              'assets/images/help.png',
+                              'assets/images/discuss.png',
                               height: 220,
                             ),
                           ),
@@ -65,48 +64,21 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                                     children: [],
                                   ),
                                   SizedBox(
-                                    height: 100,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () async {},
-                                    child: Container(
-                                      margin: EdgeInsets.only(top: 10.0),
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 20),
-                                      decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.red,
-                                            blurRadius: 15.0,
-                                          ),
-                                        ],
-                                        color: Colors.redAccent,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Text(
-                                        "Help",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "QuickSand",
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
+                                    height: 230,
                                   ),
                                   Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Container(
                                       margin: EdgeInsets.only(
-                                          left: 20, right: 20, top: 7),
+                                          left: 20, right: 20, top: 25),
                                       child: Text(
-                                        "\n\nTapping on help will send your location to every nearby police officer",
+                                        "Connect with teachers and students, text them a hi!",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "QuickSand",
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 15,
+                                          fontSize: 20,
                                         ),
                                       ),
                                     ),
@@ -129,14 +101,6 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
               margin: EdgeInsets.all(25),
               child: Column(
                 children: [
-                  Text(
-                    "Your past help requests",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: "QuickSand",
-                      fontSize: 25,
-                    ),
-                  ),
                   SizedBox(height: 10),
                   Expanded(
                     child: Center(
@@ -147,7 +111,7 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                                 height: 250),
                             SizedBox(height: 20),
                             Text(
-                              "No notes found",
+                              "No users found",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 25,

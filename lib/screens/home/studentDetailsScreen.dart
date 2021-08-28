@@ -17,7 +17,7 @@ List colors = [
   kYellowColor,
 ];
 
-class TeacherDetailsScreen extends StatelessWidget {
+class StudentDetailsScreen extends StatelessWidget {
   var kBackgroundColor = Color(0xffF9F9F9);
   var kWhiteColor = Color(0xffffffff);
   var kOrangeColor = Color(0xffEF716B);
@@ -34,7 +34,7 @@ class TeacherDetailsScreen extends StatelessWidget {
 
   String phoneNumber;
   String uid;
-  TeacherDetailsScreen({
+  StudentDetailsScreen({
     this.name,
     this.phoneNumber,
     this.subject,
@@ -261,7 +261,7 @@ class TeacherDetailsScreen extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            '$name\'s classes',
+                            'Classes $name\'s attending',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 25,
@@ -274,7 +274,7 @@ class TeacherDetailsScreen extends StatelessWidget {
                       StreamBuilder<QuerySnapshot<Map>>(
                           stream: FirebaseFirestore.instance
                               .collection('classes')
-                              .where('uid', isEqualTo: uid)
+                              .where('going', arrayContainsAny: [uid])
                               .orderBy('dateTime', descending: true)
                               .snapshots(),
                           builder: (context, snapshot) {
@@ -305,13 +305,9 @@ class TeacherDetailsScreen extends StatelessWidget {
                                       bool isExpired =
                                           db.isBefore(DateTime.now());
                                       String formatted = formatter1.format(db);
-                                      List goingList = snapshot.data.docs[index]
-                                          .data()['going'];
                                       String formatted2 = formatter2.format(db);
                                       colors.shuffle();
                                       return ClassCard(
-                                        isGoing: goingList.contains(FirebaseAuth
-                                            .instance.currentUser.uid),
                                         id: snapshot.data.docs[index].id,
                                         isExpired: isExpired,
                                         teacherName: snapshot.data.docs[index]
@@ -380,7 +376,6 @@ class ClassCard extends StatefulWidget {
   final String subjectIMG;
   final Color colorData;
   final String id;
-  final bool isGoing;
   ClassCard(
       {Key key,
       @required this.title,
@@ -390,7 +385,6 @@ class ClassCard extends StatefulWidget {
       @required this.colorData,
       @required this.isExpired,
       @required this.subjectIMG,
-      @required this.isGoing,
       @required this.desc,
       @required this.meetURL,
       @required this.subject})
@@ -583,10 +577,8 @@ class _ClassCardState extends State<ClassCard> {
                                         color: Colors.white,
                                         fontFamily: "QuickSand")),
                                 Switch(
-                                  value: widget.isGoing,
-                                  activeColor: colors[0] == kBlueColor
-                                      ? Colors.green
-                                      : Colors.blueAccent,
+                                  value: _switchValue,
+                                  activeColor: Colors.blueAccent,
                                   onChanged: (value) async {
                                     print('s1fa');
                                     if (value) {

@@ -8,6 +8,7 @@ import 'package:educately/screens/profileEdit/profileEditScreen.dart';
 import 'package:flutter/services.dart';
 import '../widgets/widgets.dart';
 import 'package:educately/services/firestoreDatabaseService.dart';
+import 'package:hive/hive.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -71,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         bool hasFilled = await _db.hasFilledData(
                             uid: FirebaseAuth.instance.currentUser.uid);
                         if (hasFilled) {
+                          saveStateToHive("1");
                           Navigator.pop(context);
                           Navigator.push(
                               context,
@@ -144,4 +146,11 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+
+void saveStateToHive(String state) {
+  // state- 0=created just now using the creation page. 1= had created before, loggin in this time. null=no created
+  var box = Hive.box('hasFilled');
+
+  box.put('state', state);
 }
