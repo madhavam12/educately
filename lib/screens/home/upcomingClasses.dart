@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import '../widgets/widgets.dart';
+import 'package:flutter/services.dart';
 
 class UpcomingClasses extends StatefulWidget {
   UpcomingClasses({Key key}) : super(key: key);
@@ -82,6 +84,7 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                               String formatted2 = formatter2.format(db);
                               colors.shuffle();
                               return ClassCard(
+                                id: snapshot.data.docs[index].id,
                                 isExpired: isExpired,
                                 teacherName: snapshot.data.docs[index]
                                     .data()['teacherName'],
@@ -137,7 +140,7 @@ class ClassCard extends StatefulWidget {
   final String desc;
   final bool isExpired;
   final String teacherName;
-
+  final String id;
   final String meetURL;
   final String dateTime;
   final String subject;
@@ -153,6 +156,7 @@ class ClassCard extends StatefulWidget {
       @required this.isExpired,
       @required this.subjectIMG,
       @required this.desc,
+      @required this.id,
       @required this.meetURL,
       @required this.subject})
       : super(key: key);
@@ -312,7 +316,11 @@ class _ClassCardState extends State<ClassCard> {
                                   fontFamily: "QuickSand")),
                           SizedBox(height: 10),
                           FlatButton.icon(
-                            onPressed: () async {},
+                            onPressed: () async {
+                              Clipboard.setData(
+                                  ClipboardData(text: widget.meetURL));
+                              showToast(msg: "Copied to clipboard!");
+                            },
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
@@ -342,7 +350,33 @@ class _ClassCardState extends State<ClassCard> {
                                 Switch(
                                   value: _switchValue,
                                   activeColor: Colors.blueAccent,
-                                  onChanged: (value) {
+                                  onChanged: (value) async {
+                                    print('s1fa');
+                                    if (value) {
+                                      print('sfa');
+                                      await FirebaseFirestore.instance
+                                          .collection("classes")
+                                          .doc(widget.id)
+                                          .set(
+                                        {
+                                          'going': FieldValue.arrayUnion([
+                                            FirebaseAuth
+                                                .instance.currentUser.uid
+                                          ]),
+                                        },
+                                        SetOptions(merge: true),
+                                      );
+                                    } else {
+                                      await FirebaseFirestore.instance
+                                          .collection("classes")
+                                          .doc(widget.id)
+                                          .set({
+                                        'going': FieldValue.arrayRemove([
+                                          FirebaseAuth.instance.currentUser.uid
+                                        ])
+                                      }, SetOptions(merge: true));
+                                    }
+
                                     setState(() {
                                       _switchValue = value;
                                     });

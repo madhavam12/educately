@@ -4,6 +4,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../widgets/widgets.dart';
+import 'package:flutter/services.dart';
 
 var kOrangeColor = Color(0xffEF716B);
 var kBlueColor = Color(0xff4B7FFB);
@@ -306,6 +308,7 @@ class TeacherDetailsScreen extends StatelessWidget {
                                       String formatted2 = formatter2.format(db);
                                       colors.shuffle();
                                       return ClassCard(
+                                        id: snapshot.data.docs[index].id,
                                         isExpired: isExpired,
                                         teacherName: snapshot.data.docs[index]
                                             .data()['teacherName'],
@@ -372,12 +375,13 @@ class ClassCard extends StatefulWidget {
   final String subject;
   final String subjectIMG;
   final Color colorData;
-
+  final String id;
   ClassCard(
       {Key key,
       @required this.title,
       @required this.teacherName,
       @required this.dateTime,
+      @required this.id,
       @required this.colorData,
       @required this.isExpired,
       @required this.subjectIMG,
@@ -541,7 +545,11 @@ class _ClassCardState extends State<ClassCard> {
                                   fontFamily: "QuickSand")),
                           SizedBox(height: 10),
                           FlatButton.icon(
-                            onPressed: () async {},
+                            onPressed: () async {
+                              Clipboard.setData(
+                                  ClipboardData(text: widget.meetURL));
+                              showToast(msg: "Copied to clipboard!");
+                            },
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
@@ -571,7 +579,33 @@ class _ClassCardState extends State<ClassCard> {
                                 Switch(
                                   value: _switchValue,
                                   activeColor: Colors.blueAccent,
-                                  onChanged: (value) {
+                                  onChanged: (value) async {
+                                    print('s1fa');
+                                    if (value) {
+                                      print('sfa');
+                                      await FirebaseFirestore.instance
+                                          .collection("classes")
+                                          .doc(widget.id)
+                                          .set(
+                                        {
+                                          'going': FieldValue.arrayUnion([
+                                            FirebaseAuth
+                                                .instance.currentUser.uid
+                                          ]),
+                                        },
+                                        SetOptions(merge: true),
+                                      );
+                                    } else {
+                                      await FirebaseFirestore.instance
+                                          .collection("classes")
+                                          .doc(widget.id)
+                                          .set({
+                                        'going': FieldValue.arrayRemove([
+                                          FirebaseAuth.instance.currentUser.uid
+                                        ])
+                                      }, SetOptions(merge: true));
+                                    }
+
                                     setState(() {
                                       _switchValue = value;
                                     });

@@ -9,7 +9,7 @@ import 'upcomingClasses.dart';
 import 'notesScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'connectStudents.dart';
 import '../widgets/sidebaritems.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -572,7 +572,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             UpcomingClasses(),
-            Container(color: Colors.orangeAccent),
+            ConnectWithStudents(),
             Container(color: Colors.orange),
           ],
         ),
