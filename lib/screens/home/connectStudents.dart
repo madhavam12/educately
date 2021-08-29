@@ -191,7 +191,7 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                                 child: Container(
                                   margin: EdgeInsets.all(10),
                                   child: Text(
-                                    "Sorry, no teachers available in your city.",
+                                    "Sorry, no students available in your city.",
                                     style: TextStyle(
                                         color: Colors.orange,
                                         fontSize: 15,
@@ -203,7 +203,7 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                             }
                           } else {
                             return Text(
-                              "Sorry, no teachers available in your city.",
+                              "Sorry, no students available in your city.",
                               style: TextStyle(
                                   color: Colors.orange,
                                   fontSize: 15,

@@ -247,9 +247,8 @@ class _ClassCardState extends State<ClassCard> {
                                           .doc()
                                           .set(
                                         {
-                                          'deviceToken': [
-                                            widget.snap.data()['deviceToken']
-                                          ]
+                                          'deviceToken':
+                                              widget.snap.data()['deviceToken']
                                         },
                                       );
                                     } else {
