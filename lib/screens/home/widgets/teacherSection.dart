@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../teacherDetails.dart';
 
@@ -7,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'teacherCard.dart';
 
 class TeacherSection extends StatelessWidget {
-  String city;
+  final String city;
   TeacherSection({Key key, @required this.city}) : super(key: key);
 
   @override

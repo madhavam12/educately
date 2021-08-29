@@ -59,10 +59,6 @@ class AllTeachersSection extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => TeacherDetailsScreen(
-                                    // uid: snapshot
-                                    //     .data.docs[index]
-                                    //     .data()["uid"],
-
                                     uid: snapshot.data.docs[index].id,
                                     phoneNumber: snapshot.data.docs[index]
                                         .data()["phoneNumber"],

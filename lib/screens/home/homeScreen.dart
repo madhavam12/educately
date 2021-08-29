@@ -1,35 +1,22 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:educately/screens/home/widgets/allTeachersSection.dart';
 import 'package:educately/screens/home/widgets/notesSection.dart';
 import 'package:educately/screens/home/widgets/randomFactCard.dart';
 import 'package:educately/screens/home/widgets/tutorButton.dart';
 import 'package:flutter/material.dart';
 
-import 'dart:async';
-
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'upcomingClasses.dart';
-import 'notesScreen.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:educately/services/randomFactService.dart';
 
-import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'upcomingClasses.dart';
+
 import 'connectStudents.dart';
 import '../widgets/sidebaritems.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'userProfile.dart';
-import 'package:provider/provider.dart';
 
 import 'package:shrink_sidemenu/shrink_sidemenu.dart';
-import 'package:liquid_ui/liquid_ui.dart';
 
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 // QrService _qrService = locator<QrService>();
-
-import 'teacherDetails.dart';
-import 'nearbyTutors.dart';
 
 final GlobalKey<SideMenuState> _endSideMenuKey = GlobalKey<SideMenuState>();
 
