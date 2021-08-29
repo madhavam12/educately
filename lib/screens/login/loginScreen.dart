@@ -10,6 +10,8 @@ import '../widgets/widgets.dart';
 import 'package:educately/services/firestoreDatabaseService.dart';
 import 'package:hive/hive.dart';
 
+import 'package:educately/services/geolocationService.dart';
+
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
 
@@ -57,7 +59,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       try {
                         var authService = FirebaseAuthService();
+                        GeolocationService loc = GeolocationService();
+                        List cityName = await loc.determinePosition();
 
+                        if (cityName[0] == false) {
+                          Navigator.of(context, rootNavigator: true).pop();
+                          showInSnackBar(
+                              context: context,
+                              value: cityName[1],
+                              color: Colors.red);
+                          return 0;
+                        }
                         var check = await authService.signInWithGoogle();
                         if (check is String) {
                           showInSnackBar(

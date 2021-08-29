@@ -85,94 +85,97 @@ class StudentDetailsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Image.network(imageUrl,
-                              height: 120, fit: BoxFit.cover),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  name,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: kTitleTextColor,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  about,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: kTitleTextColor.withOpacity(0.7),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      onTap: () async {
-                                        await canLaunch("tel:$phoneNumber")
-                                            ? await launch("tel:$phoneNumber")
-                                            : throw 'Could not launch';
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          color: kBlueColor.withOpacity(0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: SvgPicture.asset(
-                                          'assets/images/phone.svg',
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        await canLaunch("sms:$phoneNumber")
-                                            ? await launch("sms:$phoneNumber")
-                                            : throw 'Could not launch';
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          color: kYellowColor.withOpacity(0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: SvgPicture.asset(
-                                          'assets/images/chat.svg',
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                      Container(
+                        margin: EdgeInsets.all(20),
+                        child: Row(
+                          children: <Widget>[
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(imageUrl),
+                              radius: 50,
                             ),
-                          )
-                        ],
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    name,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: kTitleTextColor,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    about,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.7),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await canLaunch("tel:$phoneNumber")
+                                              ? await launch("tel:$phoneNumber")
+                                              : throw 'Could not launch';
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: kBlueColor.withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: SvgPicture.asset(
+                                            'assets/images/phone.svg',
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await canLaunch("sms:$phoneNumber")
+                                              ? await launch("sms:$phoneNumber")
+                                              : throw 'Could not launch';
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                kYellowColor.withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: SvgPicture.asset(
+                                            'assets/images/chat.svg',
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 50,
@@ -197,25 +200,15 @@ class StudentDetailsScreen extends StatelessWidget {
                               child: Text(
                                 about,
                                 style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 18,
-                                  color: kTitleTextColor,
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Contact $name',
-                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
+                                  fontFamily: "QuickSand",
                                   color: kTitleTextColor,
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 25,
                             ),
                             Container(
                               child: Row(
@@ -358,7 +351,7 @@ class StudentDetailsScreen extends StatelessWidget {
                                   child: Container(
                                     margin: EdgeInsets.all(10),
                                     child: Text(
-                                      "Sorry, no data available in your city.",
+                                      "No classes found.",
                                       style: TextStyle(
                                           color: Colors.orange,
                                           fontSize: 15,
@@ -370,7 +363,7 @@ class StudentDetailsScreen extends StatelessWidget {
                               }
                             } else {
                               return Text(
-                                "Sorry, no data available for your city.",
+                                "No classes found.",
                                 style: TextStyle(
                                     color: Colors.orange,
                                     fontSize: 15,

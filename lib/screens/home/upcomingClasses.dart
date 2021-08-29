@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import '../widgets/widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 
 class UpcomingClasses extends StatefulWidget {
   UpcomingClasses({Key key}) : super(key: key);
@@ -86,8 +87,11 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                               String formatted2 = formatter2.format(db);
                               colors.shuffle();
                               return ClassCard(
-                                isGoing: goingList.contains(
-                                    FirebaseAuth.instance.currentUser.uid),
+                                snap: snapshot.data.docs[index],
+                                isGoing: goingList != null
+                                    ? goingList.contains(
+                                        FirebaseAuth.instance.currentUser.uid)
+                                    : false,
                                 id: snapshot.data.docs[index].id,
                                 isExpired: isExpired,
                                 teacherName: snapshot.data.docs[index]
@@ -96,8 +100,8 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                                     snapshot.data.docs[index].data()['title'],
                                 desc: snapshot.data.docs[index].data()['desc'],
                                 dateTime: formatted + " at $formatted2",
-                                meetURL:
-                                    snapshot.data.docs[index].data()['meetURL'],
+                                meetURL: snapshot.data.docs[index]
+                                    .data()['downloadURL'],
                                 subject:
                                     snapshot.data.docs[index].data()['subject'],
                                 colorData: colors[0],
@@ -142,6 +146,7 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
 class ClassCard extends StatefulWidget {
   final String title;
   final String desc;
+  DocumentSnapshot<Map> snap;
   final bool isExpired;
   final String teacherName;
   final String id;
@@ -156,6 +161,7 @@ class ClassCard extends StatefulWidget {
       {Key key,
       @required this.title,
       @required this.teacherName,
+      @required this.snap,
       @required this.dateTime,
       @required this.colorData,
       @required this.isGoing,
@@ -172,8 +178,6 @@ class ClassCard extends StatefulWidget {
 }
 
 class _ClassCardState extends State<ClassCard> {
-  bool _switchValue = true;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -374,6 +378,17 @@ class _ClassCardState extends State<ClassCard> {
                                         },
                                         SetOptions(merge: true),
                                       );
+
+                                      await FirebaseFirestore.instance
+                                          .collection("classesN")
+                                          .doc()
+                                          .set(
+                                        {
+                                          'deviceToken': [
+                                            widget.snap.data()['deviceToken']
+                                          ]
+                                        },
+                                      );
                                     } else {
                                       await FirebaseFirestore.instance
                                           .collection("classes")
@@ -385,9 +400,7 @@ class _ClassCardState extends State<ClassCard> {
                                       }, SetOptions(merge: true));
                                     }
 
-                                    setState(() {
-                                      _switchValue = value;
-                                    });
+                                    setState(() {});
                                   },
                                 ),
                               ],

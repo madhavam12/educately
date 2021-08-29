@@ -83,18 +83,18 @@ class _NearbyTutorsState extends State<NearbyTutors> {
                                       name: snapshot.data.docs[index]
                                           .data()["name"],
                                       subject: snapshot.data.docs[index]
-                                          .data()["subject"],
+                                          .data()["subjectsTaught"],
                                       imageUrl: snapshot.data.docs[index]
-                                          .data()["img"],
+                                          .data()["photoURL"],
                                     ),
                                   ),
                                 );
                               },
                               child: TeacherCard(
-                                subject:
-                                    snapshot.data.docs[index].data()["subject"],
-                                imgPath:
-                                    snapshot.data.docs[index].data()["img"],
+                                subject: snapshot.data.docs[index]
+                                    .data()["subjectsTaught"],
+                                imgPath: snapshot.data.docs[index]
+                                    .data()["photoURL"],
                                 name: snapshot.data.docs[index].data()["name"],
                               ),
                             );
