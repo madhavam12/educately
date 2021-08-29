@@ -148,6 +148,7 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                                     itemCount: snapshot.data.docs.length,
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (context, index) {
+                                      print(snapshot.data.docs[index].data());
                                       return GestureDetector(
                                         onTap: () {
                                           Navigator.push(
@@ -276,26 +277,26 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                                               //     .data.docs[index]
                                               //     .data()["uid"],
 
-                                              uid: "uid",
+                                              uid: snapshot.data.docs[index].id,
                                               phoneNumber: snapshot
                                                   .data.docs[index]
                                                   .data()["phoneNumber"],
                                               name: snapshot.data.docs[index]
                                                   .data()["name"],
                                               subject: snapshot.data.docs[index]
-                                                  .data()["subject"],
+                                                  .data()["subjectsTaught"],
                                               imageUrl: snapshot
                                                   .data.docs[index]
-                                                  .data()["img"],
+                                                  .data()["photoURL"],
                                             ),
                                           ),
                                         );
                                       },
                                       child: TeacherCard(
                                         subject: snapshot.data.docs[index]
-                                            .data()["subject"],
+                                            .data()["subjectsTaught"],
                                         imgPath: snapshot.data.docs[index]
-                                            .data()["img"],
+                                            .data()["photoURL"],
                                         name: snapshot.data.docs[index]
                                             .data()["name"],
                                       ),

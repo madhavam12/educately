@@ -399,7 +399,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         //     .data.docs[index]
                                                         //     .data()["uid"],
 
-                                                        uid: "uid",
+                                                        uid: snapshot.data
+                                                            .docs[index].id,
                                                         phoneNumber: snapshot
                                                                 .data
                                                                 .docs[index]
@@ -408,12 +409,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         name: snapshot
                                                             .data.docs[index]
                                                             .data()["name"],
-                                                        subject: snapshot
-                                                            .data.docs[index]
-                                                            .data()["subject"],
+                                                        subject: snapshot.data
+                                                                .docs[index]
+                                                                .data()[
+                                                            "classesTaught"],
                                                         imageUrl: snapshot
                                                             .data.docs[index]
-                                                            .data()["img"],
+                                                            .data()["photoURL"],
                                                       ),
                                                     ),
                                                   );
@@ -421,10 +423,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 child: TeacherCard(
                                                   subject: snapshot
                                                       .data.docs[index]
-                                                      .data()["subject"],
+                                                      .data()["classesTaught"],
                                                   imgPath: snapshot
                                                       .data.docs[index]
-                                                      .data()["img"],
+                                                      .data()["photoURL"],
                                                   name: snapshot
                                                       .data.docs[index]
                                                       .data()["name"],
