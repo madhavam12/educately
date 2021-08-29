@@ -93,7 +93,7 @@ class TeacherSection extends StatelessWidget {
                         child: Container(
                           margin: EdgeInsets.all(10),
                           child: Text(
-                            "Sorry, no data available in your city.",
+                            "Sorry, no teachers available in your city.",
                             style: TextStyle(
                                 color: Colors.orange,
                                 fontSize: 15,
@@ -105,7 +105,7 @@ class TeacherSection extends StatelessWidget {
                     }
                   } else {
                     return Text(
-                      "Sorry, no data available for your city.",
+                      "Sorry, no teachers available in your city.",
                       style: TextStyle(
                           color: Colors.orange,
                           fontSize: 15,

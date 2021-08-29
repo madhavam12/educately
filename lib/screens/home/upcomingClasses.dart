@@ -113,7 +113,7 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                           child: Container(
                             margin: EdgeInsets.all(10),
                             child: Text(
-                              "Sorry, no data available in your city.",
+                              "No classes available",
                               style: TextStyle(
                                   color: Colors.orange,
                                   fontSize: 15,
@@ -125,7 +125,7 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                       }
                     } else {
                       return Text(
-                        "Sorry, no data available for your city.",
+                        "No classes available",
                         style: TextStyle(
                             color: Colors.orange,
                             fontSize: 15,

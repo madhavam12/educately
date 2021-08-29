@@ -63,7 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         List cityName = await loc.determinePosition();
 
                         if (cityName[0] == false) {
-                          Navigator.of(context, rootNavigator: true).pop();
                           showInSnackBar(
                               context: context,
                               value: cityName[1],

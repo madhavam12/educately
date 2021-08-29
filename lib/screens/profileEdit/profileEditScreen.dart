@@ -172,7 +172,7 @@ class _ProfileCreationViewState extends State<ProfileCreationView> {
                 GetTextField(
                     controller: _phoneController,
                     focusNode: _phoneFocus,
-                    iconData: LineAwesomeIcons.user,
+                    iconData: LineAwesomeIcons.phone,
                     labelText: "Phone Number",
                     hintText: "Please write your number"),
                 GetTextField(

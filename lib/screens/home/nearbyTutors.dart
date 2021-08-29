@@ -105,7 +105,7 @@ class _NearbyTutorsState extends State<NearbyTutors> {
                           child: Container(
                             margin: EdgeInsets.all(10),
                             child: Text(
-                              "Sorry, no data available in your city.",
+                              "Sorry, no tutors available in your city.",
                               style: TextStyle(
                                   color: Colors.orange,
                                   fontSize: 15,
@@ -117,7 +117,7 @@ class _NearbyTutorsState extends State<NearbyTutors> {
                       }
                     } else {
                       return Text(
-                        "Sorry, no data available for your city.",
+                        "Sorry, no tutors available for your city.",
                         style: TextStyle(
                             color: Colors.orange,
                             fontSize: 15,

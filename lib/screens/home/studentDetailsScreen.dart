@@ -51,7 +51,7 @@ class StudentDetailsScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.blue,
               image: DecorationImage(
-                image: AssetImage('assets/images/student_illustration.png'),
+                image: AssetImage('assets/images/student_detail.png'),
                 alignment: Alignment.topCenter,
                 fit: BoxFit.fitWidth,
               ),
@@ -188,7 +188,7 @@ class StudentDetailsScreen extends StatelessWidget {
                                 about,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                                  fontSize: 15,
                                   fontFamily: "QuickSand",
                                   color: kTitleTextColor,
                                 ),
