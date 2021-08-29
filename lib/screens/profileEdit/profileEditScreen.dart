@@ -3,29 +3,23 @@ import 'package:flutter/material.dart';
 
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:hive/hive.dart';
-
-import 'package:hive/hive.dart';
+import '../widgets/snackbar.dart';
 import 'package:educately/services/firebaseStorageService.dart';
 import 'package:educately/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'dart:convert';
+
 import 'package:educately/services/geolocationService.dart';
 // import 'package:dropdown_search/dropdown_search.dart';
-import 'package:educately/models/user.dart';
 
+import '../widgets/customTextField.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:educately/screens/home/homeScreen.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:flutter/services.dart';
 
 import 'package:connection_verify/connection_verify.dart';
-import 'package:educately/services/FirebaseAuthService.dart';
-
-import 'package:educately/services/firestoreDatabaseService.dart';
 
 class ProfileCreationView extends StatefulWidget {
   @override
@@ -38,27 +32,6 @@ class _ProfileCreationViewState extends State<ProfileCreationView> {
   final FocusNode _aboutFocus = FocusNode();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-  void showInSnackBar(
-      {String value,
-      Color color,
-      int sec = 3,
-      @required BuildContext context}) {
-    FocusScope.of(context).requestFocus(new FocusNode());
-    _scaffoldKey.currentState?.removeCurrentSnackBar();
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(
-      content: new Text(
-        value,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            color: Colors.white,
-            fontSize: 16.0,
-            fontFamily: "WorkSansSemiBold"),
-      ),
-      backgroundColor: color,
-      duration: Duration(seconds: sec),
-    ));
-  }
 
   final TextEditingController _nameController = TextEditingController();
 
@@ -330,83 +303,6 @@ class _ProfileCreationViewState extends State<ProfileCreationView> {
                 )
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class GetTextField extends StatelessWidget {
-  final FocusNode focusNode;
-
-  final TextEditingController controller;
-  final String hintText;
-  final String labelText;
-  final IconData iconData;
-  const GetTextField(
-      {Key key,
-      @required this.iconData,
-      @required this.controller,
-      @required this.hintText,
-      @required this.labelText,
-      @required this.focusNode})
-      : super(key: key);
-
-  getkeyboardType() {
-    if (labelText == "Phone Number") {
-      return TextInputType.number;
-    } else if (labelText == "Email") {
-      return TextInputType.emailAddress;
-    } else {
-      return TextInputType.name;
-    }
-  }
-
-  getMaxLength() {
-    if (labelText == "Phone Number") {
-      return 10;
-    } else {
-      return null;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-        top: 15.0,
-      ),
-      child: TextField(
-        focusNode: focusNode,
-        controller: controller,
-        textInputAction: TextInputAction.next,
-        keyboardType: getkeyboardType(),
-        onSubmitted: (String name) {
-          // _titleFocus.unfocus();
-          // FocusScope.of(context).requestFocus(_descFocus);
-        },
-        maxLength: getMaxLength(),
-        cursorColor: Colors.black,
-        style: TextStyle(
-            fontSize: 17.5, fontWeight: FontWeight.normal, color: Colors.black),
-        decoration: InputDecoration(
-          labelStyle: TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-          ),
-          hintStyle: TextStyle(
-            fontSize: 10,
-            color: Colors.black,
-          ),
-          prefixIcon: Icon(iconData, color: Colors.black),
-          filled: true,
-          labelText: labelText,
-          hintText: hintText,
-          fillColor: Color(0xFFeae9e0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
           ),
         ),
       ),

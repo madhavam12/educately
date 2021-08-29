@@ -4,8 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../widgets/widgets.dart';
-import 'package:flutter/services.dart';
+
 import 'widgets/classCard.dart';
 
 var kOrangeColor = Color(0xffEF716B);
@@ -19,22 +18,22 @@ List colors = [
 ];
 
 class TeacherDetailsScreen extends StatelessWidget {
-  var kBackgroundColor = Color(0xffF9F9F9);
-  var kWhiteColor = Color(0xffffffff);
-  var kOrangeColor = Color(0xffEF716B);
-  var kBlueColor = Color(0xff4B7FFB);
-  var kYellowColor = Color(0xffFFB167);
-  var kTitleTextColor = Color(0xff1E1C61);
-  var kSearchBackgroundColor = Color(0xffF2F2F2);
-  var kSearchTextColor = Color(0xffC0C0C0);
-  var kCategoryTextColor = Color(0xff292685);
+  final kBackgroundColor = Color(0xffF9F9F9);
+  final finalkWhiteColor = Color(0xffffffff);
+  final kOrangeColor = Color(0xffEF716B);
+  final kBlueColor = Color(0xff4B7FFB);
+  final kYellowColor = Color(0xffFFB167);
+  final kTitleTextColor = Color(0xff1E1C61);
+  final kSearchBackgroundColor = Color(0xffF2F2F2);
+  final kSearchTextColor = Color(0xffC0C0C0);
+  final kCategoryTextColor = Color(0xff292685);
 
-  String name;
-  String subject;
-  String imageUrl;
+  final String name;
+  final String subject;
+  final String imageUrl;
 
-  String phoneNumber;
-  String uid;
+  final String phoneNumber;
+  final String uid;
   TeacherDetailsScreen({
     this.name,
     this.phoneNumber,
